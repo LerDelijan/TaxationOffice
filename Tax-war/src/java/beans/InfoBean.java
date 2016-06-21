@@ -5,8 +5,7 @@
  */
 package beans;
 
-import dao.PaymentDaoLocal;
-import dao.TaxDaoLocal;
+import dao.AgentDaoLocal;
 import dao.TaxInfoDaoLocal;
 import java.io.Serializable;
 import java.util.List;
@@ -16,6 +15,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
+import model1.Addtax;
+import model1.Agent;
+import model1.Payment;
 import model2.Info;
 
 /**
@@ -29,20 +31,27 @@ import model2.Info;
 public class InfoBean implements Serializable{
 
     @EJB
-    private TaxDaoLocal taxDao;
-
-    @EJB
-    private PaymentDaoLocal paymentDao;
+    private AgentDaoLocal agentDao;
 
     @EJB
     private TaxInfoDaoLocal taxInfoDao;
 
-    public List<Info> getAllInfos() {
+    public List<Info> getAllInfos(){
         return taxInfoDao.getAllInfos();
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void updateInfo(Info info) {
+    public void updateInfo(Info info){
+        Agent agent = agentDao.getAgent(info.getIdagent());
+        int taxesSum = 0;
+        int paymentsSum = 0;
+        for (Addtax a : agent.getAddtaxList()) {
+            taxesSum += a.getTaxAdd().getTaxSum();
+        }
+        for (Payment p : agent.getPaymentList()) {
+            paymentsSum += p.getSum();
+        }
+        info.setAccountstate(paymentsSum >= taxesSum ? "+" : "-");
         taxInfoDao.updateInfo(info);
     }
 }
