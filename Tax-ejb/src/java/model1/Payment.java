@@ -6,6 +6,7 @@
 package model1;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,7 +25,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "payment")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p"),
     @NamedQuery(name = "Payment.findByIdpayment", query = "SELECT p FROM Payment p WHERE p.idpayment = :idpayment"),
@@ -33,26 +32,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idpayment")
     private Integer idpayment;
+    
     @Column(name = "sum")
     private Integer sum;
+    
     @JoinColumn(name = "idagent", referencedColumnName = "idagent")
     @ManyToOne(optional = false)
     private Agent idagent;
+    
     @JoinColumn(name = "idpaytype", referencedColumnName = "idpaytype")
     @ManyToOne(optional = false)
     private Paytype idpaytype;
-
-    public Payment() {
-    }
-
-    public Payment(Integer idpayment) {
-        this.idpayment = idpayment;
-    }
 
     public Integer getIdpayment() {
         return idpayment;
@@ -87,28 +83,24 @@ public class Payment implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idpayment != null ? idpayment.hashCode() : 0);
+    public int hashCode(){
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.idpayment);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Payment)) {
+    public boolean equals(Object obj){
+        if (this == obj){
+            return true;
+        }
+        if (obj == null){
             return false;
         }
-        Payment other = (Payment) object;
-        if ((this.idpayment == null && other.idpayment != null) || (this.idpayment != null && !this.idpayment.equals(other.idpayment))) {
+        if (getClass() != obj.getClass()){
             return false;
         }
-        return true;
+        final Payment other = (Payment) obj;
+        return Objects.equals(this.idpayment, other.idpayment);
     }
-
-    @Override
-    public String toString() {
-        return "model1.Payment[ idpayment=" + idpayment + " ]";
-    }
-    
 }

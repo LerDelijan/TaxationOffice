@@ -24,7 +24,7 @@ public class TaxBean implements Serializable {
     @EJB
     private TaxDaoLocal tdl;
     private String taxName;
-    private String taxSum;
+    private Integer taxSum;
     private int idTax;
 
     public int getIdTax() {
@@ -43,11 +43,11 @@ public class TaxBean implements Serializable {
         this.taxName = taxName;
     }
 
-    public String getTaxSum() {
+    public Integer getTaxSum() {
         return taxSum;
     }
 
-    public void setTaxSum(String taxSum) {
+    public void setTaxSum(Integer taxSum) {
         this.taxSum = taxSum;
     }
 

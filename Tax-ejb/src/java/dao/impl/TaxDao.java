@@ -30,7 +30,7 @@ public class TaxDao implements TaxDaoLocal {
     }
 
     @Override
-    public void addNewTax(String tax_name, String tax_sum) throws Exception {
+    public void addNewTax(String tax_name, Integer tax_sum) throws Exception {
         Tax tax = new Tax();
         tax.setTaxName(tax_name);
         tax.setTaxSum(tax_sum);

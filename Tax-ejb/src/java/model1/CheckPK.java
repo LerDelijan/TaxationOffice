@@ -22,6 +22,7 @@ public class CheckPK implements Serializable {
     @NotNull
     @Column(name = "idcheck")
     private int idcheck;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "agent_check")

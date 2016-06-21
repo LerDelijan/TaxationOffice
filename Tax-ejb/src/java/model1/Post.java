@@ -7,6 +7,7 @@ package model1;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +19,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,7 +26,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "post")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p"),
     @NamedQuery(name = "Post.findByIdpost", query = "SELECT p FROM Post p WHERE p.idpost = :idpost"),
@@ -35,23 +33,19 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idpost")
     private Integer idpost;
+    
     @Size(max = 15)
     @Column(name = "post_name")
     private String postName;
+    
     @OneToMany(mappedBy = "workerPost")
     private List<Worker> workerList;
-
-    public Post() {
-    }
-
-    public Post(Integer idpost) {
-        this.idpost = idpost;
-    }
 
     public Integer getIdpost() {
         return idpost;
@@ -69,7 +63,6 @@ public class Post implements Serializable {
         this.postName = postName;
     }
 
-    @XmlTransient
     public List<Worker> getWorkerList() {
         return workerList;
     }
@@ -79,28 +72,24 @@ public class Post implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idpost != null ? idpost.hashCode() : 0);
+    public int hashCode(){
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.idpost);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Post)) {
+    public boolean equals(Object obj){
+        if (this == obj){
+            return true;
+        }
+        if (obj == null){
             return false;
         }
-        Post other = (Post) object;
-        if ((this.idpost == null && other.idpost != null) || (this.idpost != null && !this.idpost.equals(other.idpost))) {
+        if (getClass() != obj.getClass()){
             return false;
         }
-        return true;
+        final Post other = (Post) obj;
+        return Objects.equals(this.idpost, other.idpost);
     }
-
-    @Override
-    public String toString() {
-        return "model1.Post[ idpost=" + idpost + " ]";
-    }
-    
 }

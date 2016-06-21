@@ -14,10 +14,10 @@ import model1.Tax;
  * @author Del
  */
 @Local
-public interface TaxDaoLocal {
+public interface TaxDaoLocal{
 
-    public void addNewTax(String tax_name,String tax_sum) throws Exception;
+    void addNewTax(String tax_name, Integer tax_sum) throws Exception;
 
-    public List<Tax> getAllTaxes() throws Exception;
-    
+    List<Tax> getAllTaxes() throws Exception;
+
 }

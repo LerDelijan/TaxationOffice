@@ -7,6 +7,7 @@ package model1;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,8 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,7 +27,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "agent")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Agent.findAll", query = "SELECT a FROM Agent a"),
     @NamedQuery(name = "Agent.findByIdagent", query = "SELECT a FROM Agent a WHERE a.idagent = :idagent"),
@@ -38,33 +36,33 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Agent implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idagent")
     private Integer idagent;
+    
     @Size(max = 45)
     @Column(name = "agent_name")
     private String agentName;
+    
     @Size(max = 45)
     @Column(name = "agent_inn")
     private String agentInn;
+    
     @Size(max = 45)
     @Column(name = "agent_head")
     private String agentHead;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idagent")
     private List<Payment> paymentList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "agent")
     private List<Check> checkList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "agentAdd")
     private List<Addtax> addtaxList;
-
-    public Agent() {
-    }
-
-    public Agent(Integer idagent) {
-        this.idagent = idagent;
-    }
 
     public Integer getIdagent() {
         return idagent;
@@ -98,7 +96,6 @@ public class Agent implements Serializable {
         this.agentHead = agentHead;
     }
 
-    @XmlTransient
     public List<Payment> getPaymentList() {
         return paymentList;
     }
@@ -107,7 +104,6 @@ public class Agent implements Serializable {
         this.paymentList = paymentList;
     }
 
-    @XmlTransient
     public List<Check> getCheckList() {
         return checkList;
     }
@@ -116,7 +112,6 @@ public class Agent implements Serializable {
         this.checkList = checkList;
     }
 
-    @XmlTransient
     public List<Addtax> getAddtaxList() {
         return addtaxList;
     }
@@ -126,28 +121,24 @@ public class Agent implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idagent != null ? idagent.hashCode() : 0);
+    public int hashCode(){
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.idagent);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Agent)) {
+    public boolean equals(Object obj){
+        if (this == obj){
+            return true;
+        }
+        if (obj == null){
             return false;
         }
-        Agent other = (Agent) object;
-        if ((this.idagent == null && other.idagent != null) || (this.idagent != null && !this.idagent.equals(other.idagent))) {
+        if (getClass() != obj.getClass()){
             return false;
         }
-        return true;
+        final Agent other = (Agent) obj;
+        return Objects.equals(this.idagent, other.idagent);
     }
-
-    @Override
-    public String toString() {
-        return "model1.Agent[ idagent=" + idagent + " ]";
-    }
-    
 }

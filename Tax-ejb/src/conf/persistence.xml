@@ -12,12 +12,16 @@
     <class>model1.Tax</class>
     <class>model1.Worker</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
   </persistence-unit>
   <persistence-unit name="Tax-ejbPU2" transaction-type="JTA">
     <jta-data-source>jdbc/taxinfobase</jta-data-source>
     <class>model2.Info</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
   </persistence-unit>
 </persistence>

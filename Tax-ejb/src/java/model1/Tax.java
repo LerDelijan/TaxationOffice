@@ -7,19 +7,20 @@ package model1;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,7 +28,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "tax")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tax.findAll", query = "SELECT t FROM Tax t"),
     @NamedQuery(name = "Tax.findByIdtax", query = "SELECT t FROM Tax t WHERE t.idtax = :idtax"),
@@ -36,26 +36,22 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Tax implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "idtax")
     private Integer idtax;
+    
     @Size(max = 45)
     @Column(name = "tax_name")
     private String taxName;
-    @Size(max = 45)
+    
     @Column(name = "tax_sum")
-    private String taxSum;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "taxAdd")
+    private Integer taxSum;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "taxAdd", fetch = FetchType.LAZY)
     private List<Addtax> addtaxList;
-
-    public Tax() {
-    }
-
-    public Tax(Integer idtax) {
-        this.idtax = idtax;
-    }
 
     public Integer getIdtax() {
         return idtax;
@@ -73,15 +69,14 @@ public class Tax implements Serializable {
         this.taxName = taxName;
     }
 
-    public String getTaxSum() {
+    public Integer getTaxSum() {
         return taxSum;
     }
 
-    public void setTaxSum(String taxSum) {
+    public void setTaxSum(Integer taxSum) {
         this.taxSum = taxSum;
     }
 
-    @XmlTransient
     public List<Addtax> getAddtaxList() {
         return addtaxList;
     }
@@ -91,28 +86,24 @@ public class Tax implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idtax != null ? idtax.hashCode() : 0);
+    public int hashCode(){
+        int hash = 3;
+        hash = 23 * hash + Objects.hashCode(this.idtax);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Tax)) {
+    public boolean equals(Object obj){
+        if (this == obj){
+            return true;
+        }
+        if (obj == null){
             return false;
         }
-        Tax other = (Tax) object;
-        if ((this.idtax == null && other.idtax != null) || (this.idtax != null && !this.idtax.equals(other.idtax))) {
+        if (getClass() != obj.getClass()){
             return false;
         }
-        return true;
+        final Tax other = (Tax) obj;
+        return Objects.equals(this.idtax, other.idtax);
     }
-
-    @Override
-    public String toString() {
-        return "model1.Tax[ idtax=" + idtax + " ]";
-    }
-    
 }
